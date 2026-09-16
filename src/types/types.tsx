@@ -1,4 +1,4 @@
-export interface Trail{
+export interface Hike{
     id: string,
     peak: string,
     height: number,
@@ -9,3 +9,10 @@ export interface Trail{
     notes?: string
 }
 export type DifficultyLevel = "Easy" | "Medium" | "Hard";
+
+export interface TrailsListProps{
+    hikes: Hike[]
+}
+export interface TrailProps{
+    hike: Hike
+}
