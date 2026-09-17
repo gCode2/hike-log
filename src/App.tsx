@@ -8,61 +8,25 @@ import { useEffect, useReducer, useState } from 'react';
 function App() {
   const [isAddFormShown, setAddFormShown] = useState(false);
 
-  // function loadTrails(){
-  //   const trails = localStorage.getItem("trails");
-  // }
-  const testHikes: Hike[] = [
-    {
-          id: "ddd",
-          name: "Red trail to Rysy",
-          peak: "Rysy",
-          height: 2499,
-          date: new Date(),
-          distanceKm: 13.5,
-          elevationGainM: 1670,
-          diffuculty: "Medium"
-    },
-    {
-          id: "aaa",
-          name: "Easy hike - green trail",
-          peak: "Radziejowa",
-          height: 1267,
-          date: new Date(),
-          distanceKm: 10.3,
-          elevationGainM: 450,
-          diffuculty: "Easy",
-    }
-  ]
-
   function hikeLogReducer(state: hikeLogState, action: HikeAction){
     switch(action.type){
       case "LOAD_HIKES":
         return {...state, hikes: action.hikes}
+      case "ADD_HIKE":
+        return {...state, hikes: [...state.hikes, action.data]}
       default:
         throw Error ("Unknown action type!")
     }
   }
 
-  function loadHikes(){
-    const savedHikes = localStorage.getItem("hikes");
-    var hikes: Hike[] = savedHikes ? JSON.parse(savedHikes) : [];
-    dispatch({
-      type: "LOAD_HIKES",
-      hikes: hikes
-    })
-  }
+  
 
-  function saveHike(){
-    // const savedHikes = localStorage.getItem("hikes");
-    // localStorage.setItem("hikes", JSON.stringify([...savedHikes, hike]))
-  }
-
-  const [state, dispatch] = useReducer(hikeLogReducer, {hikes: []})
+  const [state, dispatch] = useReducer(hikeLogReducer, {hikes: localStorage.getItem("hikes") ? JSON.parse(localStorage.getItem("hikes")!) : []})
   
   useEffect(()=>{
-    loadHikes();
-  },[])
-  
+    localStorage.setItem("hikes", JSON.stringify(state.hikes));
+  }, [state.hikes])
+
 
   function handleAddFormDisplay(){
     setAddFormShown(true);
@@ -71,7 +35,11 @@ function App() {
     setAddFormShown(false);
   }
   function addHikeHandler(data: HikeData){
-    console.log(data);
+    const newHike: Hike = {id: crypto.randomUUID(), ...data}
+    dispatch({
+      type: "ADD_HIKE",
+      data: newHike
+    })
   }
   return (
     <>

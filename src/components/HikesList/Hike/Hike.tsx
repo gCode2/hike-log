@@ -23,10 +23,10 @@ function Hike({hike}: HikeProps){
                 Elevation Gain: {hike.elevationGainM} m
             </div>
             <div>
-                Difficulty: {hike.diffuculty}
+                Difficulty: {hike.difficulty}
             </div>
             
-            <div className="text-zinc-700 flex flex-row w-full justify-between px-3 py-1">
+            <div className="text-zinc-700 flex flex-row w-full justify-center px-3 py-1 items-center">
                 <div>
                     <button className="bg-red-500
                     hover:bg-red-700
@@ -40,9 +40,6 @@ function Hike({hike}: HikeProps){
                         Remove
                     </button>
                 </div>
-                <span>
-                    #{hike.id}
-                </span>
             </div>
             
         </div>

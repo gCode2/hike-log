@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { AddTrailFormProps, Hike, HikeData } from "../../types/types";
+import type { AddTrailFormProps, DifficultyLevel, Hike, HikeData } from "../../types/types";
 
 function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
     const [inputs, setInputs]=useState({
@@ -7,8 +7,8 @@ function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
         peak: "",
         height: "",
         date: "",
-        distance: "",
-        elevationGain:"",
+        distanceKm: "",
+        elevationGainM:"",
         difficulty: "Easy"
     })
     const [errors, setErrors] = useState({
@@ -16,8 +16,8 @@ function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
         peak: "",
         height: "",
         date: "",
-        distance: "",
-        elevationGain:"",
+        distanceKm: "",
+        elevationGainM:"",
         difficulty: ""
     });
 
@@ -42,8 +42,8 @@ function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
                 peak: "",
                 height: "",
                 date: "",
-                distance: "",
-                elevationGain:"",
+                distanceKm: "",
+                elevationGainM:"",
                 difficulty: ""
             });
 
@@ -52,12 +52,20 @@ function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
                 peak: "",
                 height: "",
                 date: "",
-                distance: "",
-                elevationGain:"",
+                distanceKm: "",
+                elevationGainM:"",
                 difficulty: "Easy"
             })
-            const data: HikeData = inputs;
-            addHikeHandler(data);
+            // const data: HikeData = inputs;
+            addHikeHandler({
+                name: inputs.name,
+                peak: inputs.peak,
+                height: Number(inputs.height),
+                date: new Date(inputs.date),
+                distanceKm: Number(Number(inputs.distanceKm).toFixed(1)),
+                elevationGainM: Number(inputs.elevationGainM),
+                difficulty: inputs.difficulty as DifficultyLevel
+            });
             handleFormClose();
         }
     }
@@ -67,8 +75,8 @@ function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
             peak: "",
             height: "",
             date: "",
-            distance: "",
-            elevationGain:"",
+            distanceKm: "",
+            elevationGainM:"",
             difficulty: ""
         };
         if(!inputs.name.trim()){
@@ -87,15 +95,15 @@ function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
         if(!inputs.date.trim()){
             newErrors.date = "Hike date is required"
         }
-        if(!inputs.distance.trim()){
-            newErrors.distance = "Hike distance is required"
-        }else if(Number(inputs.distance) <= 0){
-            newErrors.distance = "Hike distance must be greater than 0"
+        if(!inputs.distanceKm.trim()){
+            newErrors.distanceKm = "Hike distance is required"
+        }else if(Number(inputs.distanceKm) <= 0){
+            newErrors.distanceKm = "Hike distance must be greater than 0"
         }
-        if(!inputs.elevationGain.trim()){
-            newErrors.elevationGain = "Hike's elevation gain is required"
-        }else if(!/^\d+$/.test(inputs.elevationGain)){
-            newErrors.elevationGain = "Elevation gain must be a whole number"
+        if(!inputs.elevationGainM.trim()){
+            newErrors.elevationGainM = "Hike's elevation gain is required"
+        }else if(!/^\d+$/.test(inputs.elevationGainM)){
+            newErrors.elevationGainM = "Elevation gain must be a whole number"
         }
         if(!inputs.difficulty.trim()){
             newErrors.difficulty = "Hike difficulty is required"
@@ -179,32 +187,32 @@ function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
                     </div>
                     <div className="flex flex-col">
                         <input 
-                        name="distance" 
-                        value={inputs.distance} 
+                        name="distanceKm" 
+                        value={inputs.distanceKm} 
                         onChange={handleChange} 
                         className={
-                                (errors.distance ? `border-red-500 ` : 
+                                (errors.distanceKm ? `border-red-500 ` : 
                                 ` `)
                                 +`border-1 rounded p-1`} 
                         type="text" 
                         placeholder="hike distance (km)"/>
                         <span className="text-xs text-red-500 h-4">
-                            {errors.distance}
+                            {errors.distanceKm}
                         </span>
                     </div>
                     <div className="flex flex-col">
                         <input 
-                        name="elevationGain" 
-                        value={inputs.elevationGain} 
+                        name="elevationGainM" 
+                        value={inputs.elevationGainM} 
                         onChange={handleChange} 
                         className={
-                                (errors.elevationGain ? `border-red-500 ` : 
+                                (errors.elevationGainM ? `border-red-500 ` : 
                                 ` `)
                                 +`border-1 rounded p-1`} 
                         type="text" 
                         placeholder="elevation gain (m)"/>
                         <span className="text-xs text-red-500 h-4">
-                            {errors.elevationGain}
+                            {errors.elevationGainM}
                         </span>
                     </div>
                     <div>

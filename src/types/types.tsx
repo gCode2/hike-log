@@ -6,7 +6,7 @@ export interface Hike{
     date: Date,
     distanceKm: number,
     elevationGainM: number,
-    diffuculty: DifficultyLevel
+    difficulty: DifficultyLevel
 }
 export type DifficultyLevel = "Easy" | "Medium" | "Hard";
 
@@ -25,7 +25,8 @@ export type HikeAction = | {
     type: "LOAD_HIKES",
     hikes: Hike[]
 } | {
-    type: "Y",
+    type: "ADD_HIKE",
+    data: Hike
 } 
 
 export interface AddTrailFormProps{
@@ -36,9 +37,9 @@ export interface AddTrailFormProps{
 export interface HikeData{
     name: string,
     peak: string,
-    height: string,
-    date: string,
-    distance: string,
-    elevationGain: string,
-    difficulty: string
+    height: number,
+    date: Date,
+    distanceKm: number,
+    elevationGainM: number,
+    difficulty: DifficultyLevel
 }
