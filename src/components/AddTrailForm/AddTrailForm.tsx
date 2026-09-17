@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import type { AddTrailFormProps } from "../../types/types";
+import type { AddTrailFormProps, Hike, HikeData } from "../../types/types";
 
-function AddTrailForm({addFormHideHandler}: AddTrailFormProps){
+function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
     const [inputs, setInputs]=useState({
         name: "",
         peak: "",
@@ -22,19 +22,85 @@ function AddTrailForm({addFormHideHandler}: AddTrailFormProps){
     });
 
     function handleChange(e : React.ChangeEvent<HTMLInputElement | HTMLSelectElement>){
-        setInputs({...inputs, [e.target.name]: e.target.value})
+        setInputs(prev=>({...prev, [e.target.name]:e.target.value}));
     }
 
-    function handleFormCancel(){
+    function handleFormClose(){
         addFormHideHandler();
     }
 
     function handleFormSubmit(e:React.SubmitEvent<HTMLFormElement>){
         e.preventDefault();
+        const validationErrors = validateInputs();
+        const hasErrors = Object.values(validationErrors).some(error => error !== "");
 
+        if(hasErrors){
+            setErrors(validationErrors)
+        }else{
+            setErrors({
+                name: "",
+                peak: "",
+                height: "",
+                date: "",
+                distance: "",
+                elevationGain:"",
+                difficulty: ""
+            });
+
+            setInputs({
+                name: "",
+                peak: "",
+                height: "",
+                date: "",
+                distance: "",
+                elevationGain:"",
+                difficulty: "Easy"
+            })
+            const data: HikeData = inputs;
+            addHikeHandler(data);
+            handleFormClose();
+        }
     }
-    function validateFormInputs(){
-
+    function validateInputs(){
+        const newErrors = {
+            name: "",
+            peak: "",
+            height: "",
+            date: "",
+            distance: "",
+            elevationGain:"",
+            difficulty: ""
+        };
+        if(!inputs.name.trim()){
+            newErrors.name = "Hike name is required"
+        }
+        if(!inputs.peak.trim()){
+            newErrors.peak = "Mountain name is required"
+        }
+        if(!inputs.height.trim()){
+            newErrors.height = "Mountain height is required"
+        }else if(!/^\d+$/.test(inputs.height)){
+            newErrors.height = "Mountain height must be a whole number"
+        }else if(Number(inputs.height) <= 0){
+            newErrors.height = "Mountain height must be greater than 0"
+        }
+        if(!inputs.date.trim()){
+            newErrors.date = "Hike date is required"
+        }
+        if(!inputs.distance.trim()){
+            newErrors.distance = "Hike distance is required"
+        }else if(Number(inputs.distance) <= 0){
+            newErrors.distance = "Hike distance must be greater than 0"
+        }
+        if(!inputs.elevationGain.trim()){
+            newErrors.elevationGain = "Hike's elevation gain is required"
+        }else if(!/^\d+$/.test(inputs.elevationGain)){
+            newErrors.elevationGain = "Elevation gain must be a whole number"
+        }
+        if(!inputs.difficulty.trim()){
+            newErrors.difficulty = "Hike difficulty is required"
+        }
+        return newErrors;
     }
 
     return (
@@ -46,31 +112,118 @@ function AddTrailForm({addFormHideHandler}: AddTrailFormProps){
                         Add a hike!
                     </h2>
                     </div>
-                    <div>
-                        <input name="name" value={inputs.name} onChange={handleChange} className="border-1 rounded p-1" type="text" placeholder="name your hike"/>
+                    <div className="flex flex-col">
+                        <input 
+                            name="name" 
+                            value={inputs.name} 
+                            onChange={handleChange} 
+                            className={
+                                (errors.name ? `border-red-500 ` : 
+                                ` `)
+                                +`border-1 rounded p-1`} 
+                            type="text" 
+                            placeholder="name your hike"/>
+                            <span className="text-xs text-red-500 h-4">
+                                {errors.name}
+                            </span>
                     </div>
-                    <div>
-                        <input name="peak" value={inputs.peak}  onChange={handleChange} className="border-1 rounded p-1" type="text" placeholder="mountain name"/>
+                    <div className="flex flex-col">
+                        <input 
+                            name="peak" 
+                            value={inputs.peak} 
+                            onChange={handleChange} className={
+                                (errors.peak ? `border-red-500 ` : 
+                                ` `)
+                                +`border-1 rounded p-1`}
+                            type="text" 
+                            placeholder="mountain name"/>
+                            <span className="text-xs text-red-500 h-4">
+                                {errors.peak}
+                            </span>
                     </div>
-                    <div>
-                        <input name="height" value={inputs.height} onChange={handleChange} className="border-1 rounded p-1" type="text" placeholder="mountain height (m)"/>
+                    <div className="flex flex-col">
+                        <input 
+                        name="height" 
+                        value={inputs.height} 
+                        onChange={handleChange} 
+                        className={
+                                (errors.height ? `border-red-500 ` : 
+                                ` `)
+                                +`border-1 rounded p-1`}
+                        type="text" 
+                        placeholder="mountain height (m)"/>
+                        <span className="text-xs text-red-500 h-4">
+                                {errors.height}
+                        </span>
                     </div>
-                    <div>
-                        Date: <input name="date" value={inputs.date} onChange={handleChange} className="border-1 rounded p-1" type="date" placeholder=""/>
+                    <div className="flex flex-col">
+                        <div className="flex flex-row gap-2 items-center">
+                            <div>
+                                Date: 
+                            </div>
+                            <input 
+                                name="date" 
+                                value={inputs.date} 
+                                onChange={handleChange} 
+                                className={
+                                    (errors.date ? `border-red-500 ` : 
+                                    ` `)
+                                    +`border-1 rounded p-1`}
+                                type="date" 
+                                placeholder=""/>
+                        </div>
+                        
+                        <span className="text-xs text-red-500 h-4">
+                            {errors.date}
+                        </span>
                     </div>
-                    <div>
-                        <input name="distance" value={inputs.distance} onChange={handleChange} className="border-1 rounded p-1" type="text" placeholder="hike distance (km)"/>
+                    <div className="flex flex-col">
+                        <input 
+                        name="distance" 
+                        value={inputs.distance} 
+                        onChange={handleChange} 
+                        className={
+                                (errors.distance ? `border-red-500 ` : 
+                                ` `)
+                                +`border-1 rounded p-1`} 
+                        type="text" 
+                        placeholder="hike distance (km)"/>
+                        <span className="text-xs text-red-500 h-4">
+                            {errors.distance}
+                        </span>
                     </div>
-                    <div>
-                        <input name="elevationGain" value={inputs.elevationGain} onChange={handleChange} className="border-1 rounded p-1" type="text" placeholder="elevation gain (m)"/>
+                    <div className="flex flex-col">
+                        <input 
+                        name="elevationGain" 
+                        value={inputs.elevationGain} 
+                        onChange={handleChange} 
+                        className={
+                                (errors.elevationGain ? `border-red-500 ` : 
+                                ` `)
+                                +`border-1 rounded p-1`} 
+                        type="text" 
+                        placeholder="elevation gain (m)"/>
+                        <span className="text-xs text-red-500 h-4">
+                            {errors.elevationGain}
+                        </span>
                     </div>
                     <div>
                         Difficulty:
-                        <select name="difficulty" value={inputs.difficulty} onChange={handleChange} className="border-1 rounded p-1">
+                        <select 
+                        name="difficulty" 
+                        value={inputs.difficulty} 
+                        onChange={handleChange} 
+                        className={
+                                (errors.difficulty ? `border-red-500 ` : 
+                                ` `)
+                                +`border-1 rounded p-1`} >
                             <option>Easy</option>
                             <option>Medium</option>
                             <option>Hard</option>
                         </select>
+                        <span className="text-xs text-red-500 h-4">
+                            {errors.difficulty}
+                        </span>
                     </div>
                     <div className="flex flex-row gap-3">
                         <div>
@@ -98,15 +251,11 @@ function AddTrailForm({addFormHideHandler}: AddTrailFormProps){
                             rounded
                             text-xs
                             hover: cursor-pointer
-                            transition duration-300 ease-in-out" onClick={handleFormCancel}>
+                            transition duration-300 ease-in-out" onClick={handleFormClose}>
                                 Cancel
                             </button>
                         </div>
                     </div>
-                    
-                    
-                    
-                    
                 </form>
             </div>
         </>

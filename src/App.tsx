@@ -3,7 +3,7 @@ import "tailwindcss";
 import Searchbar from './components/HikeLogControllers/SearchBar.tsx/Searchbar';
 import HikesList from './components/HikesList/HikesList';
 import AddTrailForm from './components/AddTrailForm/AddTrailForm';
-import type { Hike, HikeAction, hikeLogState } from './types/types';
+import type { Hike, HikeAction, HikeData, hikeLogState } from './types/types';
 import { useEffect, useReducer, useState } from 'react';
 function App() {
   const [isAddFormShown, setAddFormShown] = useState(false);
@@ -26,7 +26,7 @@ function App() {
           id: "aaa",
           name: "Easy hike - green trail",
           peak: "Radziejowa",
-          height: 1266.5,
+          height: 1267,
           date: new Date(),
           distanceKm: 10.3,
           elevationGainM: 450,
@@ -70,7 +70,9 @@ function App() {
   function handleAddFormHide(){
     setAddFormShown(false);
   }
-
+  function addHikeHandler(data: HikeData){
+    console.log(data);
+  }
   return (
     <>
       <div className="app flex flex-col h-screen">
@@ -105,7 +107,7 @@ function App() {
           <HikesList hikes={state.hikes}/>
         </div>
         {
-          isAddFormShown && <AddTrailForm addFormHideHandler={handleAddFormHide}/>
+          isAddFormShown && <AddTrailForm addFormHideHandler={handleAddFormHide} addHikeHandler={addHikeHandler}/>
         }
       </div>
     </>
