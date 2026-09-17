@@ -11,10 +11,12 @@ export interface Hike{
 export type DifficultyLevel = "Easy" | "Medium" | "Hard";
 
 export interface HikesListProps{
-    hikes: Hike[]
+    hikes: Hike[],
+    hikeRemoveHandler: (id: string)=>void
 }
 export interface HikeProps{
-    hike: Hike
+    hike: Hike,
+    hikeRemoveHandler: (id: string)=>void
 }
 
 export interface hikeLogState{
@@ -25,8 +27,11 @@ export type HikeAction = | {
     type: "LOAD_HIKES",
     hikes: Hike[]
 } | {
-    type: "ADD_HIKE",
+    type: "HIKE_ADD",
     data: Hike
+} | {
+    type: "HIKE_REMOVE",
+    id: string
 } 
 
 export interface AddTrailFormProps{

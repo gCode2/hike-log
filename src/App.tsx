@@ -12,8 +12,10 @@ function App() {
     switch(action.type){
       case "LOAD_HIKES":
         return {...state, hikes: action.hikes}
-      case "ADD_HIKE":
+      case "HIKE_ADD":
         return {...state, hikes: [...state.hikes, action.data]}
+      case "HIKE_REMOVE":
+        return {...state, hikes: state.hikes.filter(hike=>hike.id !== action.id)}
       default:
         throw Error ("Unknown action type!")
     }
@@ -61,8 +63,14 @@ function App() {
   function addHikeHandler(data: HikeData){
     const newHike: Hike = {id: crypto.randomUUID(), ...data}
     dispatch({
-      type: "ADD_HIKE",
+      type: "HIKE_ADD",
       data: newHike
+    })
+  }
+  function handleHikeRemove(id: string){
+    dispatch({
+      type: "HIKE_REMOVE",
+      id: id
     })
   }
   return (
@@ -96,7 +104,7 @@ function App() {
           </div>
         </header>
         <div>
-          <HikesList hikes={state.hikes}/>
+          <HikesList hikes={state.hikes} hikeRemoveHandler={handleHikeRemove}/>
         </div>
         {
           isAddFormShown && <AddTrailForm addFormHideHandler={handleAddFormHide} addHikeHandler={addHikeHandler}/>

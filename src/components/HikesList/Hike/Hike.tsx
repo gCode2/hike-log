@@ -1,6 +1,6 @@
 import type { HikeProps } from "../../../types/types";
 
-function Hike({hike}: HikeProps){
+function Hike({hike, hikeRemoveHandler}: HikeProps){
     return (
     <>
         <div className="w-50 h-50 border-1 rounded-lg flex flex-col items-center justify-between">
@@ -38,7 +38,8 @@ function Hike({hike}: HikeProps){
                     rounded
                     text-xs
                     hover: cursor-pointer
-                    transition duration-300 ease-in-out">
+                    transition duration-300 ease-in-out"
+                    onClick={()=>hikeRemoveHandler(hike.id)}>
                         Remove
                     </button>
                 </div>
