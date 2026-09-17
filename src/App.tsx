@@ -4,9 +4,9 @@ import Searchbar from './components/HikeLogControllers/SearchBar.tsx/Searchbar';
 import HikesList from './components/HikesList/HikesList';
 import AddTrailForm from './components/AddTrailForm/AddTrailForm';
 import type { Hike, HikeAction, hikeLogState } from './types/types';
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 function App() {
-  
+  const [isAddFormShown, setAddFormShown] = useState(false);
 
   // function loadTrails(){
   //   const trails = localStorage.getItem("trails");
@@ -43,18 +43,33 @@ function App() {
     }
   }
 
-  function loadHikes(hikes: Hike[]){
+  function loadHikes(){
+    const savedHikes = localStorage.getItem("hikes");
+    var hikes: Hike[] = savedHikes ? JSON.parse(savedHikes) : [];
     dispatch({
       type: "LOAD_HIKES",
       hikes: hikes
     })
   }
 
+  function saveHike(){
+    // const savedHikes = localStorage.getItem("hikes");
+    // localStorage.setItem("hikes", JSON.stringify([...savedHikes, hike]))
+  }
+
+  const [state, dispatch] = useReducer(hikeLogReducer, {hikes: []})
+  
   useEffect(()=>{
-    loadHikes(testHikes);
+    loadHikes();
   },[])
   
-  const [state, dispatch] = useReducer(hikeLogReducer, {hikes: []})
+
+  function handleAddFormDisplay(){
+    setAddFormShown(true);
+  }
+  function handleAddFormHide(){
+    setAddFormShown(false);
+  }
 
   return (
     <>
@@ -68,15 +83,30 @@ function App() {
               Track your mountain trails!
             </span>
           </div>
-          <div className="flex px-5">
+          <div className="flex px-5 gap-2 items-center">
+            <button className="bg-green-600
+                    hover:bg-green-700
+                    text-white
+                    font-bold
+                    py-2 px-2
+                    rounded
+                    text-xs
+                    hover: cursor-pointer
+                    transition duration-300 ease-in-out" onClick={handleAddFormDisplay}>
+                      Add a hike
+            </button>
+            <span>
+              or
+            </span>
             <Searchbar/>
           </div>
         </header>
         <div>
           <HikesList hikes={state.hikes}/>
         </div>
-        {/* <AddTrailForm/> */}
-        
+        {
+          isAddFormShown && <AddTrailForm addFormHideHandler={handleAddFormHide}/>
+        }
       </div>
     </>
   )
