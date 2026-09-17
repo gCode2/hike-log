@@ -19,9 +19,33 @@ function App() {
     }
   }
 
-  
+  const initialHikes: Hike[] = getInitialHikes();
+    
+  function getInitialHikes() : Hike[]{
+    const saved = localStorage.getItem("hikes");
+    if(!saved){
+      return [];
+    }
+    try{
+      const parsed = JSON.parse(saved);
 
-  const [state, dispatch] = useReducer(hikeLogReducer, {hikes: localStorage.getItem("hikes") ? JSON.parse(localStorage.getItem("hikes")!) : []})
+      if(!Array.isArray(parsed)){
+        return [];
+      }
+      return parsed.map((hike: any)=>({
+        ...hike,
+        date: new Date(hike.date)
+      }));
+
+    }catch(e: any){
+      console.error("Couldn't load hikes list from local storage", e)
+      return [];
+    }
+    
+    
+  }
+
+  const [state, dispatch] = useReducer(hikeLogReducer, {hikes: initialHikes});
   
   useEffect(()=>{
     localStorage.setItem("hikes", JSON.stringify(state.hikes));
@@ -61,7 +85,7 @@ function App() {
                     py-2 px-2
                     rounded
                     text-xs
-                    hover: cursor-pointer
+                    hover:cursor-pointer
                     transition duration-300 ease-in-out" onClick={handleAddFormDisplay}>
                       Add a hike
             </button>

@@ -25,7 +25,9 @@ function Hike({hike}: HikeProps){
             <div>
                 Difficulty: {hike.difficulty}
             </div>
-            
+            <div>
+                Date: {hike.date.toLocaleDateString()}
+            </div>
             <div className="text-zinc-700 flex flex-row w-full justify-center px-3 py-1 items-center">
                 <div>
                     <button className="bg-red-500

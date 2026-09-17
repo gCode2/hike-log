@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { AddTrailFormProps, DifficultyLevel, Hike, HikeData } from "../../types/types";
+import type { AddTrailFormProps, DifficultyLevel} from "../../types/types";
 
 function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
     const [inputs, setInputs]=useState({
@@ -244,13 +244,13 @@ function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
                                 py-2 px-2
                                 rounded
                                 text-xs
-                                hover: cursor-pointer
+                                hover:cursor-pointer
                                 transition duration-300 ease-in-out">
                                 Add
                             </button>
                         </div>
                         <div>
-                            <button className="
+                            <button type="button" className="
                             border-1
                             hover:border-zinc-500
                             text-white
@@ -258,7 +258,7 @@ function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
                             py-2 px-2
                             rounded
                             text-xs
-                            hover: cursor-pointer
+                            hover:cursor-pointer
                             transition duration-300 ease-in-out" onClick={handleFormClose}>
                                 Cancel
                             </button>
