@@ -3,18 +3,14 @@ import type { HikesSummaryProps } from "../../types/types";
 function HikesSummary({hikes}: HikesSummaryProps){
 
     function getDistanceSum(){
-        var sum = 0;
-        hikes.map(hike=>{
-            sum += hike.distanceKm;
-        })
-        return sum;
+        return hikes.reduce((sum,hike)=>{
+            return sum+=hike.distanceKm;
+        }, 0)
     }
     function getElevationGainSum(){
-        var sum = 0;
-        hikes.map(hike=>{
-            sum += hike.elevationGainM;
-        })
-        return sum;
+        return hikes.reduce((sum,hike)=>{
+            return sum+=hike.elevationGainM;
+        }, 0)
     }
 
 
