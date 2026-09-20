@@ -68,7 +68,7 @@ export interface SearchbarProps{
 }
 export interface FilterHandlerProps{
     levels: readonly (DifficultyLevel | "all")[],
-    sortHandler: (level: DifficultyLevel | "all") => void
+    filterHandler: (level: DifficultyLevel | "all") => void
 }
 
 export type SortFields = "Date" | "Distance";

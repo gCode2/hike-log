@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { AddTrailFormProps, DifficultyLevel} from "../../types/types";
+import { DIFFICULTY_LEVELS, type AddTrailFormProps, type DifficultyLevel} from "../../types/types";
 
 function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
     const [inputs, setInputs]=useState({
@@ -56,7 +56,6 @@ function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
                 elevationGainM:"",
                 difficulty: "Easy"
             })
-            // const data: HikeData = inputs;
             addHikeHandler({
                 name: inputs.name,
                 peak: inputs.peak,
@@ -97,6 +96,8 @@ function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
         }
         if(!inputs.distanceKm.trim()){
             newErrors.distanceKm = "Hike distance is required"
+        }else if(!Number(inputs.distanceKm)){
+            newErrors.distanceKm = "Hike distance must be a number!"
         }else if(Number(inputs.distanceKm) <= 0){
             newErrors.distanceKm = "Hike distance must be greater than 0"
         }
@@ -225,9 +226,11 @@ function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
                                 (errors.difficulty ? `border-red-500 ` : 
                                 ` `)
                                 +`border-1 rounded p-1`} >
-                            <option>Easy</option>
-                            <option>Medium</option>
-                            <option>Hard</option>
+                            {DIFFICULTY_LEVELS.map(level=>(
+                                <option key="level">
+                                    {level}
+                                </option>
+                            ))}
                         </select>
                         <span className="text-xs text-red-500 h-4">
                             {errors.difficulty}

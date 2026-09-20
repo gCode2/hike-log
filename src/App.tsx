@@ -121,9 +121,9 @@ function App() {
 
     const modifier = order === "Asc" ? 1 : -1;
     if(field === "Date"){
-        const dateA = new Date(a.date).getTime();
-        const dateB = new Date(b.date).getTime();
-        return (dateA - dateB) * modifier;
+        const dateA = a.date.getTime();
+        const dateB = b.date.getTime();
+        return dateA - dateB * modifier;
     }
     if(field === "Distance"){
         const distanceA = a.distanceKm;
@@ -173,7 +173,7 @@ function App() {
             Filter your hikes!
           </div>
           <div>
-            <FilterHandler levels={hikeDifficultyLevels} sortHandler={handleFilter}/>
+            <FilterHandler levels={hikeDifficultyLevels} filterHandler={handleFilter}/>
           </div>
         </div>
         <div className="flex flex-col items-center justify-center">
