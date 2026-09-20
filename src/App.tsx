@@ -3,10 +3,11 @@ import "tailwindcss";
 import Searchbar from './components/HikeLogControllers/SearchBar.tsx/Searchbar';
 import HikesList from './components/HikesList/HikesList';
 import AddTrailForm from './components/AddTrailForm/AddTrailForm';
-import type { DifficultyLevel, Hike, HikeAction, HikeData, hikeLogState } from './types/types';
+import type { DifficultyLevel, Hike, HikeAction, HikeData, hikeLogState, SortFields, SortOrders } from './types/types';
 import { DIFFICULTY_LEVELS } from './types/types';
 import { useEffect, useReducer, useState } from 'react';
 import FilterHandler from './components/HikeLogControllers/FilterHandler/FilterHandler';
+import SortHandler from './components/HikeLogControllers/SortHandler/SortHandler';
 function App() {
   const [isAddFormShown, setAddFormShown] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -18,8 +19,12 @@ function App() {
         return {...state, hikes: [...state.hikes, action.data]}
       case "HIKE_REMOVE":
         return {...state, hikes: state.hikes.filter(hike=>hike.id !== action.id)}
-      case "SET_SORT":
+      case "SET_FILTER":
         return {...state, selectedHikeDifficulty: action.level}
+      case "SET_SORT_ORDER":
+        return {...state, sortOrder: action.order}
+      case "SET_SORT_FIELD":
+        return {...state, sortField: action.field}
       default:
         throw Error ("Unknown action type!")
     }
@@ -50,7 +55,7 @@ function App() {
     
   }
 
-  const [state, dispatch] = useReducer(hikeLogReducer, {hikes: initialHikes, selectedHikeDifficulty:"all"});
+  const [state, dispatch] = useReducer(hikeLogReducer, {hikes: initialHikes, selectedHikeDifficulty:"all", sortOrder: null, sortField: null});
   
   useEffect(()=>{
     localStorage.setItem("hikes", JSON.stringify(state.hikes));
@@ -82,10 +87,22 @@ function App() {
 
   const hikeDifficultyLevels = ["all", ...DIFFICULTY_LEVELS] as const;
 
-  function handleSort(level: DifficultyLevel | "all"){
+  function handleFilter(level: DifficultyLevel | "all"){
     dispatch({
-      type: "SET_SORT",
+      type: "SET_FILTER",
       level: level
+    })
+  }
+  function handleSortOrder(order: SortOrders){
+    dispatch({
+      type: "SET_SORT_ORDER",
+      order: order
+    })
+  }
+  function handleSortFields(field: SortFields){
+    dispatch({
+      type: "SET_SORT_FIELD",
+      field: field
     })
   }
 
@@ -96,6 +113,26 @@ function App() {
 
     return matchesLevel && matchesSearch;
   })
+  const filteredAndSortedHikes = [...filteredHikes].sort((a,b)=>{
+    const field = state.sortField;
+    const order = state.sortOrder;
+    if(!field || !order) return 0;
+
+    const modifier = order === "Asc" ? 1 : -1;
+    if(field === "Date"){
+        const dateA = new Date(a.date).getTime();
+        const dateB = new Date(b.date).getTime();
+        return (dateA - dateB) * modifier;
+    }
+    if(field === "Distance"){
+        const distanceA = a.distanceKm;
+        const distanceB = b.distanceKm;
+        return (distanceA - distanceB) * modifier;
+    }
+    return 0;
+  })
+
+
 
   return (
     <>
@@ -129,14 +166,22 @@ function App() {
         </header>
         <div className="flex flex-col items-center justify-center">
           <div>
-            Sort your hikes!
+            Filter your hikes!
           </div>
           <div>
-            <FilterHandler levels={hikeDifficultyLevels} sortHandler={handleSort}/>
+            <FilterHandler levels={hikeDifficultyLevels} sortHandler={handleFilter}/>
+          </div>
+        </div>
+        <div className="flex flex-col items-center justify-center">
+          <div>
+            Sort your hikes by:
+          </div>
+          <div className="flex flex-col items-center justify-center">
+            <SortHandler sortOrderHandler={handleSortOrder} sortFieldHandler={handleSortFields}/>
           </div>
         </div>
         <div className="pt-2">
-          <HikesList hikes={filteredHikes} hikeRemoveHandler={handleHikeRemove}/>
+          <HikesList hikes={filteredAndSortedHikes} hikeRemoveHandler={handleHikeRemove}/>
         </div>
         {
           isAddFormShown && <AddTrailForm addFormHideHandler={handleAddFormHide} addHikeHandler={addHikeHandler}/>

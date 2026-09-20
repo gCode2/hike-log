@@ -23,7 +23,9 @@ export interface HikeProps{
 
 export interface hikeLogState{
     hikes: Hike[],
-    selectedHikeDifficulty: DifficultyLevel | "all"
+    selectedHikeDifficulty: DifficultyLevel | "all",
+    sortOrder: SortOrders | null,
+    sortField: SortFields | null;
 }
 
 export type HikeAction = | {
@@ -36,8 +38,14 @@ export type HikeAction = | {
     type: "HIKE_REMOVE",
     id: string
 } | {
-    type: "SET_SORT",
+    type: "SET_FILTER",
     level: DifficultyLevel | "all"
+} | {
+    type: "SET_SORT_ORDER",
+    order: SortOrders
+} | {
+    type: "SET_SORT_FIELD",
+    field: SortFields
 }
 
 export interface AddTrailFormProps{
@@ -61,4 +69,12 @@ export interface SearchbarProps{
 export interface FilterHandlerProps{
     levels: readonly (DifficultyLevel | "all")[],
     sortHandler: (level: DifficultyLevel | "all") => void
+}
+
+export type SortFields = "Date" | "Distance";
+export type SortOrders = "Asc" | "Desc";
+
+export interface SortHandlerProps{
+    sortOrderHandler: (order: SortOrders) => void;
+    sortFieldHandler: (field: SortFields) => void;
 }
