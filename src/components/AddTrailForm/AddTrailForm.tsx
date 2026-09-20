@@ -227,7 +227,7 @@ function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
                                 ` `)
                                 +`border-1 rounded p-1`} >
                             {DIFFICULTY_LEVELS.map(level=>(
-                                <option key="level">
+                                <option key={level}>
                                     {level}
                                 </option>
                             ))}
