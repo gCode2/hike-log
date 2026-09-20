@@ -90,8 +90,11 @@ function App() {
   }
 
   const filteredHikes = state.hikes.filter(hike=>{
-    const matchesStatus = state.selectedHikeDifficulty === "all" || hike.difficulty === state.selectedHikeDifficulty;
-    return matchesStatus;
+    const matchesLevel = state.selectedHikeDifficulty === "all" || hike.difficulty === state.selectedHikeDifficulty;
+
+    const matchesSearch = hike.name.toLowerCase().includes(searchText.toLowerCase()) || hike.peak.toLowerCase().includes(searchText.toLowerCase())
+
+    return matchesLevel && matchesSearch;
   })
 
   return (
