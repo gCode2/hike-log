@@ -8,6 +8,7 @@ import { DIFFICULTY_LEVELS } from './types/types';
 import { useEffect, useReducer, useState } from 'react';
 import FilterHandler from './components/HikeLogControllers/FilterHandler/FilterHandler';
 import SortHandler from './components/HikeLogControllers/SortHandler/SortHandler';
+import HikesSummary from './components/HikesSummary/HikesSummary';
 function App() {
   const [isAddFormShown, setAddFormShown] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -164,6 +165,9 @@ function App() {
             <Searchbar searchText={searchText} changeHandler={handleChange}/>
           </div>
         </header>
+        <div className="flex flex-row justify-center">
+          <HikesSummary hikes={state.hikes}/>
+        </div>
         <div className="flex flex-col items-center justify-center">
           <div>
             Filter your hikes!

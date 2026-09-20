@@ -78,3 +78,6 @@ export interface SortHandlerProps{
     sortOrderHandler: (order: SortOrders) => void;
     sortFieldHandler: (field: SortFields) => void;
 }
+export interface HikesSummaryProps{
+    hikes: Hike[]
+}
