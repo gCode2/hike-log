@@ -3,11 +3,13 @@ import "tailwindcss";
 import Searchbar from './components/HikeLogControllers/SearchBar.tsx/Searchbar';
 import HikesList from './components/HikesList/HikesList';
 import AddTrailForm from './components/AddTrailForm/AddTrailForm';
-import type { Hike, HikeAction, HikeData, hikeLogState } from './types/types';
+import type { DifficultyLevel, Hike, HikeAction, HikeData, hikeLogState } from './types/types';
+import { DIFFICULTY_LEVELS } from './types/types';
 import { useEffect, useReducer, useState } from 'react';
+import FilterHandler from './components/HikeLogControllers/FilterHandler/FilterHandler';
 function App() {
   const [isAddFormShown, setAddFormShown] = useState(false);
-
+  const [searchText, setSearchText] = useState("");
   function hikeLogReducer(state: hikeLogState, action: HikeAction){
     switch(action.type){
       case "LOAD_HIKES":
@@ -16,6 +18,8 @@ function App() {
         return {...state, hikes: [...state.hikes, action.data]}
       case "HIKE_REMOVE":
         return {...state, hikes: state.hikes.filter(hike=>hike.id !== action.id)}
+      case "SET_SORT":
+        return {...state, selectedHikeDifficulty: action.level}
       default:
         throw Error ("Unknown action type!")
     }
@@ -39,15 +43,14 @@ function App() {
         date: new Date(hike.date)
       }));
 
-    }catch(e: any){
+    }catch(e: unknown){
       console.error("Couldn't load hikes list from local storage", e)
       return [];
     }
     
-    
   }
 
-  const [state, dispatch] = useReducer(hikeLogReducer, {hikes: initialHikes});
+  const [state, dispatch] = useReducer(hikeLogReducer, {hikes: initialHikes, selectedHikeDifficulty:"all"});
   
   useEffect(()=>{
     localStorage.setItem("hikes", JSON.stringify(state.hikes));
@@ -73,6 +76,24 @@ function App() {
       id: id
     })
   }
+  function handleChange(text: string){
+    setSearchText(text)
+  }
+
+  const hikeDifficultyLevels = ["all", ...DIFFICULTY_LEVELS] as const;
+
+  function handleSort(level: DifficultyLevel | "all"){
+    dispatch({
+      type: "SET_SORT",
+      level: level
+    })
+  }
+
+  const filteredHikes = state.hikes.filter(hike=>{
+    const matchesStatus = state.selectedHikeDifficulty === "all" || hike.difficulty === state.selectedHikeDifficulty;
+    return matchesStatus;
+  })
+
   return (
     <>
       <div className="app flex flex-col h-screen">
@@ -100,11 +121,19 @@ function App() {
             <span>
               or
             </span>
-            <Searchbar/>
+            <Searchbar searchText={searchText} changeHandler={handleChange}/>
           </div>
         </header>
-        <div>
-          <HikesList hikes={state.hikes} hikeRemoveHandler={handleHikeRemove}/>
+        <div className="flex flex-col items-center justify-center">
+          <div>
+            Sort your hikes!
+          </div>
+          <div>
+            <FilterHandler levels={hikeDifficultyLevels} sortHandler={handleSort}/>
+          </div>
+        </div>
+        <div className="pt-2">
+          <HikesList hikes={filteredHikes} hikeRemoveHandler={handleHikeRemove}/>
         </div>
         {
           isAddFormShown && <AddTrailForm addFormHideHandler={handleAddFormHide} addHikeHandler={addHikeHandler}/>

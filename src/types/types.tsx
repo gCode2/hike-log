@@ -8,7 +8,9 @@ export interface Hike{
     elevationGainM: number,
     difficulty: DifficultyLevel
 }
-export type DifficultyLevel = "Easy" | "Medium" | "Hard";
+export const DIFFICULTY_LEVELS = ["Easy", "Medium", "Hard"] as const;
+
+export type DifficultyLevel = typeof DIFFICULTY_LEVELS[number];
 
 export interface HikesListProps{
     hikes: Hike[],
@@ -20,7 +22,8 @@ export interface HikeProps{
 }
 
 export interface hikeLogState{
-    hikes: Hike[]
+    hikes: Hike[],
+    selectedHikeDifficulty: DifficultyLevel | "all"
 }
 
 export type HikeAction = | {
@@ -32,7 +35,10 @@ export type HikeAction = | {
 } | {
     type: "HIKE_REMOVE",
     id: string
-} 
+} | {
+    type: "SET_SORT",
+    level: DifficultyLevel | "all"
+}
 
 export interface AddTrailFormProps{
     addFormHideHandler: () => void,
@@ -47,4 +53,12 @@ export interface HikeData{
     distanceKm: number,
     elevationGainM: number,
     difficulty: DifficultyLevel
+}
+export interface SearchbarProps{
+    searchText: string,
+    changeHandler: (text: string) => void
+}
+export interface FilterHandlerProps{
+    levels: readonly (DifficultyLevel | "all")[],
+    sortHandler: (level: DifficultyLevel | "all") => void
 }

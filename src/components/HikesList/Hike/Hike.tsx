@@ -37,7 +37,7 @@ function Hike({hike, hikeRemoveHandler}: HikeProps){
                     py-0.5 px-2
                     rounded
                     text-xs
-                    hover: cursor-pointer
+                    hover:cursor-pointer
                     transition duration-300 ease-in-out"
                     onClick={()=>hikeRemoveHandler(hike.id)}>
                         Remove
