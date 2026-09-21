@@ -9,8 +9,8 @@ import { useEffect, useReducer, useState } from 'react';
 import FilterHandler from './components/HikeLogControllers/FilterHandler/FilterHandler';
 import SortHandler from './components/HikeLogControllers/SortHandler/SortHandler';
 import HikesSummary from './components/HikesSummary/HikesSummary';
+import { Link, Route, Routes } from 'react-router-dom';
 function App() {
-  const [isAddFormShown, setAddFormShown] = useState(false);
   const [searchText, setSearchText] = useState("");
   function hikeLogReducer(state: hikeLogState, action: HikeAction){
     switch(action.type){
@@ -62,13 +62,6 @@ function App() {
     localStorage.setItem("hikes", JSON.stringify(state.hikes));
   }, [state.hikes])
 
-
-  function handleAddFormDisplay(){
-    setAddFormShown(true);
-  }
-  function handleAddFormHide(){
-    setAddFormShown(false);
-  }
   function addHikeHandler(data: HikeData){
     const newHike: Hike = {id: crypto.randomUUID(), ...data}
     dispatch({
@@ -137,6 +130,11 @@ function App() {
 
   return (
     <>
+    {/* <Routes>
+      {/* <Route path="*" element={<App/>}/> 
+      <Route path="/add" element={<AddTrailForm addHikeHandler={addHikeHandler}/>}/>
+    </Routes> */}
+    
       <div className="app flex flex-col h-screen">
         <header className="flex flex-row w-screen px-5 items-center justify-between h-25">
           <div className="flex-col">
@@ -148,7 +146,7 @@ function App() {
             </span>
           </div>
           <div className="flex px-5 gap-2 items-center">
-            <button className="bg-green-600
+            <Link to="/add" className="bg-green-600
                     hover:bg-green-700
                     text-white
                     font-bold
@@ -156,40 +154,46 @@ function App() {
                     rounded
                     text-xs
                     hover:cursor-pointer
-                    transition duration-300 ease-in-out" onClick={handleAddFormDisplay}>
+                    transition duration-300 ease-in-out">
                       Add a hike
-            </button>
+            </Link>
             <span>
               or
             </span>
             <Searchbar searchText={searchText} changeHandler={handleChange}/>
           </div>
         </header>
-        <div className="flex flex-row justify-center">
-          <HikesSummary hikes={state.hikes}/>
-        </div>
-        <div className="flex flex-col items-center justify-center">
-          <div>
-            Filter your hikes!
-          </div>
-          <div>
-            <FilterHandler levels={hikeDifficultyLevels} filterHandler={handleFilter}/>
-          </div>
-        </div>
-        <div className="flex flex-col items-center justify-center">
-          <div>
-            Sort your hikes by:
-          </div>
-          <div className="flex flex-col items-center justify-center">
-            <SortHandler sortOrderHandler={handleSortOrder} sortFieldHandler={handleSortFields}/>
-          </div>
-        </div>
-        <div className="pt-2">
-          <HikesList hikes={filteredAndSortedHikes} hikeRemoveHandler={handleHikeRemove}/>
-        </div>
-        {
-          isAddFormShown && <AddTrailForm addFormHideHandler={handleAddFormHide} addHikeHandler={addHikeHandler}/>
-        }
+        <Routes>
+          <Route path="/" element={
+            <>
+              <div className="flex flex-row justify-center">
+                <HikesSummary hikes={state.hikes}/>
+              </div>
+              <div className="flex flex-col items-center justify-center">
+                <div>
+                  Filter your hikes!
+                </div>
+                <div>
+                  <FilterHandler levels={hikeDifficultyLevels} filterHandler={handleFilter}/>
+                </div>
+              </div>
+              <div className="flex flex-col items-center justify-center">
+                <div>
+                  Sort your hikes by:
+                </div>
+                <div className="flex flex-col items-center justify-center">
+                  <SortHandler sortOrderHandler={handleSortOrder} sortFieldHandler={handleSortFields}/>
+                </div>
+              </div>
+              <div className="pt-2">
+                <HikesList hikes={filteredAndSortedHikes} hikeRemoveHandler={handleHikeRemove}/>
+              </div>
+            </>
+          }/>
+          <Route path="/add" element={
+            <AddTrailForm addHikeHandler={addHikeHandler}/>
+          }/>
+        </Routes>
       </div>
     </>
   )

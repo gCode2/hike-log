@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { DIFFICULTY_LEVELS, type AddTrailFormProps, type DifficultyLevel} from "../../types/types";
+import { Link, useNavigate } from "react-router-dom";
 
-function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
+function AddTrailForm({addHikeHandler}: AddTrailFormProps){
     const [inputs, setInputs]=useState({
         name: "",
         peak: "",
@@ -20,13 +21,9 @@ function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
         elevationGainM:"",
         difficulty: ""
     });
-
+    const navigate = useNavigate();
     function handleChange(e : React.ChangeEvent<HTMLInputElement | HTMLSelectElement>){
         setInputs(prev=>({...prev, [e.target.name]:e.target.value}));
-    }
-
-    function handleFormClose(){
-        addFormHideHandler();
     }
 
     function handleFormSubmit(e:React.SubmitEvent<HTMLFormElement>){
@@ -65,7 +62,7 @@ function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
                 elevationGainM: Number(inputs.elevationGainM),
                 difficulty: inputs.difficulty as DifficultyLevel
             });
-            handleFormClose();
+            navigate("/");
         }
     }
     function validateInputs(){
@@ -114,7 +111,7 @@ function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
 
     return (
         <>
-            <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center">
+            <div className="flex items-center justify-center">
                 <form className="flex flex-col items-center justify-center border-1 p-2 w-100 rounded-lg gap-1" onSubmit={handleFormSubmit}>
                     <div>
                         <h2 className="text-xl font-bold">
@@ -253,7 +250,7 @@ function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
                             </button>
                         </div>
                         <div>
-                            <button type="button" className="
+                            <Link to="/" type="button" className="
                             border-1
                             hover:border-zinc-500
                             text-white
@@ -262,9 +259,9 @@ function AddTrailForm({addFormHideHandler, addHikeHandler}: AddTrailFormProps){
                             rounded
                             text-xs
                             hover:cursor-pointer
-                            transition duration-300 ease-in-out" onClick={handleFormClose}>
+                            transition duration-300 ease-in-out">
                                 Cancel
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </form>

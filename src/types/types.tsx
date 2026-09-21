@@ -49,7 +49,6 @@ export type HikeAction = | {
 }
 
 export interface AddTrailFormProps{
-    addFormHideHandler: () => void,
     addHikeHandler: (hikeData: HikeData) => void
 }
 
