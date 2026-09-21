@@ -116,7 +116,7 @@ function App() {
     if(field === "Date"){
         const dateA = a.date.getTime();
         const dateB = b.date.getTime();
-        return dateA - dateB * modifier;
+        return (dateA - dateB) * modifier;
     }
     if(field === "Distance"){
         const distanceA = a.distanceKm;
