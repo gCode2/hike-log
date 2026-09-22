@@ -80,3 +80,7 @@ export interface SortHandlerProps{
 export interface HikesSummaryProps{
     hikes: Hike[]
 }
+
+export interface HikeDetailsProps{
+    hikes: Hike[]
+}

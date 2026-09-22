@@ -3,13 +3,16 @@ import "tailwindcss";
 import Searchbar from './components/HikeLogControllers/SearchBar.tsx/Searchbar';
 import HikesList from './components/HikesList/HikesList';
 import AddTrailForm from './components/AddTrailForm/AddTrailForm';
-import type { DifficultyLevel, Hike, HikeAction, HikeData, hikeLogState, SortFields, SortOrders } from './types/types';
+import type { DifficultyLevel, Hike as HikeType, HikeAction, HikeData, hikeLogState, SortFields, SortOrders } from './types/types';
 import { DIFFICULTY_LEVELS } from './types/types';
 import { useEffect, useReducer, useState } from 'react';
 import FilterHandler from './components/HikeLogControllers/FilterHandler/FilterHandler';
 import SortHandler from './components/HikeLogControllers/SortHandler/SortHandler';
 import HikesSummary from './components/HikesSummary/HikesSummary';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes, useParams } from 'react-router-dom';
+import Hike from './components/HikesList/Hike/Hike';
+import HikeDetails from './components/HikeDetails';
+
 function App() {
   const [searchText, setSearchText] = useState("");
   function hikeLogReducer(state: hikeLogState, action: HikeAction){
@@ -31,9 +34,9 @@ function App() {
     }
   }
 
-  const initialHikes: Hike[] = getInitialHikes();
-    
-  function getInitialHikes() : Hike[]{
+  const initialHikes: HikeType[] = getInitialHikes();
+
+  function getInitialHikes() : HikeType[]{
     const saved = localStorage.getItem("hikes");
     if(!saved){
       return [];
@@ -63,7 +66,7 @@ function App() {
   }, [state.hikes])
 
   function addHikeHandler(data: HikeData){
-    const newHike: Hike = {id: crypto.randomUUID(), ...data}
+    const newHike: HikeType = {id: crypto.randomUUID(), ...data}
     dispatch({
       type: "HIKE_ADD",
       data: newHike
@@ -130,11 +133,6 @@ function App() {
 
   return (
     <>
-    {/* <Routes>
-      {/* <Route path="*" element={<App/>}/> 
-      <Route path="/add" element={<AddTrailForm addHikeHandler={addHikeHandler}/>}/>
-    </Routes> */}
-    
       <div className="app flex flex-col h-screen">
         <header className="flex flex-row w-screen px-5 items-center justify-between h-25">
           <div className="flex-col">
@@ -193,6 +191,9 @@ function App() {
           <Route path="/add" element={
             <AddTrailForm addHikeHandler={addHikeHandler}/>
           }/>
+          <Route path="/hikes/:id"  element={
+            <HikeDetails hikes={state.hikes}/>
+            }/>
         </Routes>
       </div>
     </>
