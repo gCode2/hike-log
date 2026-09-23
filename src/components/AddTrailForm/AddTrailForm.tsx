@@ -250,7 +250,8 @@ function AddTrailForm({addHikeHandler}: AddTrailFormProps){
                             </button>
                         </div>
                         <div>
-                            <Link to="/" type="button" className="
+                            <Link to="/" className="
+                            inline-block
                             border-1
                             hover:border-zinc-500
                             text-white

@@ -1,6 +1,5 @@
 import './App.css'
 import "tailwindcss";
-import Searchbar from './components/HikeLogControllers/SearchBar.tsx/Searchbar';
 import HikesList from './components/HikesList/HikesList';
 import AddTrailForm from './components/AddTrailForm/AddTrailForm';
 import type { DifficultyLevel, Hike as HikeType, HikeAction, HikeData, hikeLogState, SortFields, SortOrders } from './types/types';
@@ -9,8 +8,9 @@ import { useEffect, useReducer, useState } from 'react';
 import FilterHandler from './components/HikeLogControllers/FilterHandler/FilterHandler';
 import SortHandler from './components/HikeLogControllers/SortHandler/SortHandler';
 import HikesSummary from './components/HikesSummary/HikesSummary';
-import { Link, Route, Routes } from 'react-router-dom';
-import HikeDetails from './components/HikeDetails';
+import { Route, Routes } from 'react-router-dom';
+import HikeDetails from './components/HikeDetails/HikeDetails';
+import Layout from './components/Layout/Layout';
 
 function App() {
   const [searchText, setSearchText] = useState("");
@@ -133,35 +133,10 @@ function App() {
   return (
     <>
       <div className="app flex flex-col h-screen">
-        <header className="flex flex-row w-screen px-5 items-center justify-between h-25">
-          <div className="flex-col">
-            <h1 className="text-5xl font-bold">
-              Hikrr
-            </h1>
-            <span className="text-zinc-400">
-              Track your mountain trails!
-            </span>
-          </div>
-          <div className="flex px-5 gap-2 items-center">
-            <Link to="/add" className="bg-green-600
-                    hover:bg-green-700
-                    text-white
-                    font-bold
-                    py-2 px-2
-                    rounded
-                    text-xs
-                    hover:cursor-pointer
-                    transition duration-300 ease-in-out">
-                      Add a hike
-            </Link>
-            <span>
-              or
-            </span>
-            <Searchbar searchText={searchText} changeHandler={handleChange}/>
-          </div>
-        </header>
+        
         <Routes>
-          <Route path="/" element={
+          <Route element={<Layout searchText={searchText} changeHandler={handleChange}/>}>
+            <Route path="/" element={
             <>
               <div className="flex flex-row justify-center">
                 <HikesSummary hikes={state.hikes}/>
@@ -192,7 +167,9 @@ function App() {
           }/>
           <Route path="/hikes/:id"  element={
             <HikeDetails hikes={state.hikes}/>
-            }/>
+          }/>
+          </Route>
+          
         </Routes>
       </div>
     </>

@@ -84,3 +84,7 @@ export interface HikesSummaryProps{
 export interface HikeDetailsProps{
     hikes: Hike[]
 }
+export interface LayoutProps{
+    searchText: string,
+    changeHandler: (text: string) => void
+}

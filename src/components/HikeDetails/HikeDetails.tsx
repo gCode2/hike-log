@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import type { HikeDetailsProps } from "../types/types";
+import type { HikeDetailsProps } from "../../types/types";
 
 function HikeDetails({hikes}:HikeDetailsProps){
     
