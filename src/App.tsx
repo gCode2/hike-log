@@ -9,8 +9,7 @@ import { useEffect, useReducer, useState } from 'react';
 import FilterHandler from './components/HikeLogControllers/FilterHandler/FilterHandler';
 import SortHandler from './components/HikeLogControllers/SortHandler/SortHandler';
 import HikesSummary from './components/HikesSummary/HikesSummary';
-import { Link, Route, Routes, useParams } from 'react-router-dom';
-import Hike from './components/HikesList/Hike/Hike';
+import { Link, Route, Routes } from 'react-router-dom';
 import HikeDetails from './components/HikeDetails';
 
 function App() {
