@@ -73,8 +73,7 @@ function HikeForm({action, hikes, addHikeHandler, editHikeHandler}: HikeFormProp
                 difficulty: "Easy"
             })
             if(action === "Edit"){
-                if(!hikeToEdit) return;
-               editHikeHandler(hikeToEdit.id, {
+               editHikeHandler(id!, {
                 name: inputs.name,
                 peak: inputs.peak,
                 height: Number(inputs.height),
