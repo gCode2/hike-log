@@ -128,7 +128,9 @@ function App() {
     return 0;
   })
 
-
+  function handleHikeEdit(id: string){
+    console.log(id)
+  }
 
   return (
     <>
@@ -158,7 +160,7 @@ function App() {
                 </div>
               </div>
               <div className="pt-2">
-                <HikesList hikes={filteredAndSortedHikes} hikeRemoveHandler={handleHikeRemove}/>
+                <HikesList hikes={filteredAndSortedHikes} hikeRemoveHandler={handleHikeRemove} hikeEditHandler={handleHikeEdit}/>
               </div>
             </>
           }/>

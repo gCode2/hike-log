@@ -1,6 +1,6 @@
 import type { HikeProps } from "../../../types/types";
 
-function Hike({hike, hikeRemoveHandler}: HikeProps){
+function Hike({hike, hikeRemoveHandler, hikeEditHandler}: HikeProps){
     return (
     <>
         <div className="w-50 h-50 border-1 rounded-lg flex flex-col items-center justify-between">
@@ -28,7 +28,7 @@ function Hike({hike, hikeRemoveHandler}: HikeProps){
             <div>
                 Date: {hike.date.toLocaleDateString()}
             </div>
-            <div className="text-zinc-700 flex flex-row w-full justify-center px-3 py-1 items-center">
+            <div className="text-zinc-700 flex flex-row w-full justify-center px-3 py-1 items-center gap-2">
                 <div>
                     <button className="bg-red-500
                     hover:bg-red-700
@@ -41,6 +41,20 @@ function Hike({hike, hikeRemoveHandler}: HikeProps){
                     transition duration-300 ease-in-out"
                     onClick={()=>hikeRemoveHandler(hike.id)}>
                         Remove
+                    </button>
+                </div>
+                <div>
+                    <button className="bg-zinc-500
+                    hover:bg-zinc-600
+                    text-white
+                    font-bold
+                    py-0.5 px-2
+                    rounded
+                    text-xs
+                    hover:cursor-pointer
+                    transition duration-300 ease-in-out"
+                    onClick={()=>hikeEditHandler(hike.id)}>
+                        Edit
                     </button>
                 </div>
             </div>

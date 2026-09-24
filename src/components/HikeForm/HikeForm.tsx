@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { DIFFICULTY_LEVELS, type AddTrailFormProps, type DifficultyLevel} from "../../types/types";
 import { Link, useNavigate } from "react-router-dom";
 
-function AddTrailForm({addHikeHandler}: AddTrailFormProps){
+function HikeForm({addHikeHandler}: AddTrailFormProps){
     const [inputs, setInputs]=useState({
         name: "",
         peak: "",
@@ -270,4 +270,4 @@ function AddTrailForm({addHikeHandler}: AddTrailFormProps){
         </>
     )
 }
-export default AddTrailForm;
+export default HikeForm;

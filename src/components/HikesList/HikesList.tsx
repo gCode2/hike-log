@@ -1,7 +1,7 @@
 import type { HikesListProps } from "../../types/types";
 import Hike from "./Hike/Hike";
 
-function HikesList({hikes, hikeRemoveHandler}: HikesListProps){
+function HikesList({hikes, hikeRemoveHandler, hikeEditHandler}: HikesListProps){
     return (
     <>
         <div className="flex flex-row gap-3 items-center justify-center">
@@ -11,7 +11,7 @@ function HikesList({hikes, hikeRemoveHandler}: HikesListProps){
                 <div className="text-zinc-400">No hikes to display</div> : 
                 
                 hikes.map(hike=>(
-                    <Hike key={hike.id} hike={hike} hikeRemoveHandler={hikeRemoveHandler}/>
+                    <Hike key={hike.id} hike={hike} hikeRemoveHandler={hikeRemoveHandler} hikeEditHandler={hikeEditHandler}/>
                 ))}
         </div>
     </>

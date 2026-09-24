@@ -14,11 +14,13 @@ export type DifficultyLevel = typeof DIFFICULTY_LEVELS[number];
 
 export interface HikesListProps{
     hikes: Hike[],
-    hikeRemoveHandler: (id: string)=>void
+    hikeRemoveHandler: (id: string)=>void,
+    hikeEditHandler: (id:string) => void
 }
 export interface HikeProps{
     hike: Hike,
     hikeRemoveHandler: (id: string)=>void
+    hikeEditHandler: (id:string) => void
 }
 
 export interface hikeLogState{
