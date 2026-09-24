@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom";
 import type { HikeProps } from "../../../types/types";
 
-function Hike({hike, hikeRemoveHandler, hikeEditHandler}: HikeProps){
+function Hike({hike, hikeRemoveHandler, getHike}: HikeProps){
     return (
     <>
         <div className="w-50 h-50 border-1 rounded-lg flex flex-col items-center justify-between">
@@ -44,7 +45,7 @@ function Hike({hike, hikeRemoveHandler, hikeEditHandler}: HikeProps){
                     </button>
                 </div>
                 <div>
-                    <button className="bg-zinc-500
+                    <Link to={`/hikes/${hike.id}/edit`} className="bg-zinc-500
                     hover:bg-zinc-600
                     text-white
                     font-bold
@@ -52,10 +53,10 @@ function Hike({hike, hikeRemoveHandler, hikeEditHandler}: HikeProps){
                     rounded
                     text-xs
                     hover:cursor-pointer
-                    transition duration-300 ease-in-out"
-                    onClick={()=>hikeEditHandler(hike.id)}>
+                    transition duration-300 ease-in-out">
                         Edit
-                    </button>
+                    </Link>
+                    
                 </div>
             </div>
             

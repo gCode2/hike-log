@@ -1,8 +1,7 @@
 import './App.css'
 import "tailwindcss";
 import HikesList from './components/HikesList/HikesList';
-import AddTrailForm from './components/AddTrailForm/AddTrailForm';
-import type { DifficultyLevel, Hike as HikeType, HikeAction, HikeData, hikeLogState, SortFields, SortOrders } from './types/types';
+import type { DifficultyLevel, Hike as HikeType, HikeAction, HikeData, hikeLogState, SortFields, SortOrders, Hike } from './types/types';
 import { DIFFICULTY_LEVELS } from './types/types';
 import { useEffect, useReducer, useState } from 'react';
 import FilterHandler from './components/HikeLogControllers/FilterHandler/FilterHandler';
@@ -11,6 +10,7 @@ import HikesSummary from './components/HikesSummary/HikesSummary';
 import { Route, Routes } from 'react-router-dom';
 import HikeDetails from './components/HikeDetails/HikeDetails';
 import Layout from './components/Layout/Layout';
+import HikeForm from './components/HikeForm/HikeForm';
 
 function App() {
   const [searchText, setSearchText] = useState("");
@@ -22,6 +22,11 @@ function App() {
         return {...state, hikes: [...state.hikes, action.data]}
       case "HIKE_REMOVE":
         return {...state, hikes: state.hikes.filter(hike=>hike.id !== action.id)}
+      case "HIKE_EDIT":
+        return {...state, 
+          hikes: state.hikes.map(
+            hike=>hike.id===action.data.id ? action.data : hike
+          )}
       case "SET_FILTER":
         return {...state, selectedHikeDifficulty: action.level}
       case "SET_SORT_ORDER":
@@ -128,8 +133,12 @@ function App() {
     return 0;
   })
 
-  function handleHikeEdit(id: string){
-    console.log(id)
+  function editHikeHandler(id: string, data: HikeData){
+    const newHike: Hike = {...data, id: id};
+    dispatch({
+      type: "HIKE_EDIT",
+      data: newHike
+    })
   }
 
   return (
@@ -160,15 +169,18 @@ function App() {
                 </div>
               </div>
               <div className="pt-2">
-                <HikesList hikes={filteredAndSortedHikes} hikeRemoveHandler={handleHikeRemove} hikeEditHandler={handleHikeEdit}/>
+                <HikesList hikes={filteredAndSortedHikes} hikeRemoveHandler={handleHikeRemove}/>
               </div>
             </>
           }/>
           <Route path="/add" element={
-            <AddTrailForm addHikeHandler={addHikeHandler}/>
+            <HikeForm action={"Add"} hikes={state.hikes} addHikeHandler={addHikeHandler} editHikeHandler={editHikeHandler}/>
           }/>
           <Route path="/hikes/:id"  element={
             <HikeDetails hikes={state.hikes}/>
+          }/>
+          <Route path="/hikes/:id/edit" element={
+            <HikeForm action={"Edit"} hikes={state.hikes}  addHikeHandler={addHikeHandler} editHikeHandler={editHikeHandler}/>
           }/>
           </Route>
           

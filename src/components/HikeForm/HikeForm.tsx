@@ -1,8 +1,13 @@
-import React, { useState } from "react";
-import { DIFFICULTY_LEVELS, type AddTrailFormProps, type DifficultyLevel} from "../../types/types";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { DIFFICULTY_LEVELS, type HikeFormProps, type DifficultyLevel} from "../../types/types";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-function HikeForm({addHikeHandler}: AddTrailFormProps){
+function HikeForm({action, hikes, addHikeHandler, editHikeHandler}: HikeFormProps){
+    const navigate = useNavigate();
+    const {id} = useParams();
+        
+    const hikeToEdit = action === "Edit" ? hikes.find(hike=>hike.id===id) : undefined;
+
     const [inputs, setInputs]=useState({
         name: "",
         peak: "",
@@ -21,12 +26,26 @@ function HikeForm({addHikeHandler}: AddTrailFormProps){
         elevationGainM:"",
         difficulty: ""
     });
-    const navigate = useNavigate();
+
+    useEffect(()=>{
+        if(hikeToEdit){
+          setInputs({
+                name: hikeToEdit.name ?? "",
+                peak: hikeToEdit.peak ?? "",
+                height: hikeToEdit.height ? String(hikeToEdit.height) : "",
+                date: hikeToEdit.date ? new Date(hikeToEdit.date).toISOString().split('T')[0] : "",
+                distanceKm: hikeToEdit.distanceKm ? String(hikeToEdit.distanceKm) : "",
+                elevationGainM: hikeToEdit.elevationGainM ? String(hikeToEdit.elevationGainM) : "",
+                difficulty: hikeToEdit.difficulty ?? "Easy"
+            });  
+        }
+    }, [hikeToEdit])
+
     function handleChange(e : React.ChangeEvent<HTMLInputElement | HTMLSelectElement>){
         setInputs(prev=>({...prev, [e.target.name]:e.target.value}));
     }
 
-    function handleFormSubmit(e:React.SubmitEvent<HTMLFormElement>){
+    function handleFormSubmit(e:React.SubmitEvent<HTMLFormElement>, action: string){
         e.preventDefault();
         const validationErrors = validateInputs();
         const hasErrors = Object.values(validationErrors).some(error => error !== "");
@@ -53,7 +72,9 @@ function HikeForm({addHikeHandler}: AddTrailFormProps){
                 elevationGainM:"",
                 difficulty: "Easy"
             })
-            addHikeHandler({
+            if(action === "Edit"){
+                if(!hikeToEdit) return;
+               editHikeHandler(hikeToEdit.id, {
                 name: inputs.name,
                 peak: inputs.peak,
                 height: Number(inputs.height),
@@ -62,6 +83,17 @@ function HikeForm({addHikeHandler}: AddTrailFormProps){
                 elevationGainM: Number(inputs.elevationGainM),
                 difficulty: inputs.difficulty as DifficultyLevel
             });
+            }else if(action === "Add"){
+                addHikeHandler({
+                name: inputs.name,
+                peak: inputs.peak,
+                height: Number(inputs.height),
+                date: new Date(inputs.date),
+                distanceKm: Number(Number(inputs.distanceKm).toFixed(1)),
+                elevationGainM: Number(inputs.elevationGainM),
+                difficulty: inputs.difficulty as DifficultyLevel
+            });
+            }
             navigate("/");
         }
     }
@@ -112,10 +144,10 @@ function HikeForm({addHikeHandler}: AddTrailFormProps){
     return (
         <>
             <div className="flex items-center justify-center">
-                <form className="flex flex-col items-center justify-center border-1 p-2 w-100 rounded-lg gap-1" onSubmit={handleFormSubmit}>
+                <form className="flex flex-col items-center justify-center border-1 p-2 w-100 rounded-lg gap-1" onSubmit={(e)=>handleFormSubmit(e, action)}>
                     <div>
                         <h2 className="text-xl font-bold">
-                        Add a hike!
+                        {action} a hike!
                     </h2>
                     </div>
                     <div className="flex flex-col">
@@ -246,7 +278,7 @@ function HikeForm({addHikeHandler}: AddTrailFormProps){
                                 text-xs
                                 hover:cursor-pointer
                                 transition duration-300 ease-in-out">
-                                Add
+                                {action}
                             </button>
                         </div>
                         <div>

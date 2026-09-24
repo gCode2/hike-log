@@ -14,13 +14,11 @@ export type DifficultyLevel = typeof DIFFICULTY_LEVELS[number];
 
 export interface HikesListProps{
     hikes: Hike[],
-    hikeRemoveHandler: (id: string)=>void,
-    hikeEditHandler: (id:string) => void
+    hikeRemoveHandler: (id: string)=>void
 }
 export interface HikeProps{
     hike: Hike,
     hikeRemoveHandler: (id: string)=>void
-    hikeEditHandler: (id:string) => void
 }
 
 export interface hikeLogState{
@@ -40,6 +38,9 @@ export type HikeAction = | {
     type: "HIKE_REMOVE",
     id: string
 } | {
+    type: "HIKE_EDIT",
+    data: Hike
+} | {
     type: "SET_FILTER",
     level: DifficultyLevel | "all"
 } | {
@@ -50,8 +51,11 @@ export type HikeAction = | {
     field: SortFields
 }
 
-export interface AddTrailFormProps{
-    addHikeHandler: (hikeData: HikeData) => void
+export interface HikeFormProps{
+    action: string,
+    hikes: Hike[],
+    addHikeHandler: (hikeData: HikeData) => void,
+    editHikeHandler: (id:string, hikeData: HikeData) => void
 }
 
 export interface HikeData{
