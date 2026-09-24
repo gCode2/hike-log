@@ -16,8 +16,6 @@ function App() {
   const [searchText, setSearchText] = useState("");
   function hikeLogReducer(state: hikeLogState, action: HikeAction){
     switch(action.type){
-      case "LOAD_HIKES":
-        return {...state, hikes: action.hikes}
       case "HIKE_ADD":
         return {...state, hikes: [...state.hikes, action.data]}
       case "HIKE_REMOVE":

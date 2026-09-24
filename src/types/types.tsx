@@ -29,9 +29,6 @@ export interface hikeLogState{
 }
 
 export type HikeAction = | {
-    type: "LOAD_HIKES",
-    hikes: Hike[]
-} | {
     type: "HIKE_ADD",
     data: Hike
 } | {
