@@ -11,6 +11,7 @@ import { Route, Routes } from 'react-router-dom';
 import HikeDetails from './components/HikeDetails/HikeDetails';
 import Layout from './components/Layout/Layout';
 import HikeForm from './components/HikeForm/HikeForm';
+import { HikeLogContext } from './context/HikeLogContext';
 
 function App() {
   const [searchText, setSearchText] = useState("");
@@ -141,6 +142,7 @@ function App() {
 
   return (
     <>
+    <HikeLogContext.Provider value={{state, dispatch}}>
       <div className="app flex flex-col h-screen">
         
         <Routes>
@@ -167,7 +169,7 @@ function App() {
                 </div>
               </div>
               <div className="pt-2">
-                <HikesList hikes={filteredAndSortedHikes} hikeRemoveHandler={handleHikeRemove}/>
+                <HikesList hikes={filteredAndSortedHikes}/>
               </div>
             </>
           }/>
@@ -175,7 +177,7 @@ function App() {
             <HikeForm action={"Add"} hikes={state.hikes} addHikeHandler={addHikeHandler} editHikeHandler={editHikeHandler}/>
           }/>
           <Route path="/hikes/:id"  element={
-            <HikeDetails hikes={state.hikes}/>
+            <HikeDetails />
           }/>
           <Route path="/hikes/:id/edit" element={
             <HikeForm action={"Edit"} hikes={state.hikes}  addHikeHandler={addHikeHandler} editHikeHandler={editHikeHandler}/>
@@ -184,6 +186,7 @@ function App() {
           
         </Routes>
       </div>
+      </HikeLogContext.Provider>
     </>
   )
 }

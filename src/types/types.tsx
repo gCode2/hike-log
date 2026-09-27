@@ -1,3 +1,5 @@
+import type { Dispatch, ReactNode } from "react";
+
 export interface Hike{
     id: string,
     name: string,
@@ -13,12 +15,10 @@ export const DIFFICULTY_LEVELS = ["Easy", "Medium", "Hard"] as const;
 export type DifficultyLevel = typeof DIFFICULTY_LEVELS[number];
 
 export interface HikesListProps{
-    hikes: Hike[],
-    hikeRemoveHandler: (id: string)=>void
+    hikes: Hike[]
 }
 export interface HikeProps{
-    hike: Hike,
-    hikeRemoveHandler: (id: string)=>void
+    hike: Hike
 }
 
 export interface hikeLogState{
@@ -85,7 +85,6 @@ export interface HikesSummaryProps{
 }
 
 export interface HikeDetailsProps{
-    hikes: Hike[]
 }
 export interface LayoutProps{
     searchText: string,
@@ -93,3 +92,11 @@ export interface LayoutProps{
 }
 
 export type FormActions = "Add" | "Edit"
+
+export interface HikeLogContextType{
+    state: hikeLogState,
+    dispatch: Dispatch<HikeAction>
+}
+export interface HikeLogProviderProps{
+    children: ReactNode;
+}

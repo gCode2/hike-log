@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import type { HikeProps } from "../../../types/types";
+import useHikeLog from "../../../hooks/useHikeLog";
 
-function Hike({hike, hikeRemoveHandler}: HikeProps){
+function Hike({hike}: HikeProps){
+    const context = useHikeLog();
     return (
     <>
         <div className="w-50 h-50 border-1 rounded-lg flex flex-col items-center justify-between">
@@ -40,7 +42,7 @@ function Hike({hike, hikeRemoveHandler}: HikeProps){
                     text-xs
                     hover:cursor-pointer
                     transition duration-300 ease-in-out"
-                    onClick={()=>hikeRemoveHandler(hike.id)}>
+                    onClick={()=>context.dispatch({type:"HIKE_REMOVE", id: hike.id})}>
                         Remove
                     </button>
                 </div>
