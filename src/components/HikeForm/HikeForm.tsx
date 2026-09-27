@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { DIFFICULTY_LEVELS, type HikeFormProps, type DifficultyLevel} from "../../types/types";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
