@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import type { HikeProps } from "../../../types/types";
 
-function Hike({hike, hikeRemoveHandler, getHike}: HikeProps){
+function Hike({hike, hikeRemoveHandler}: HikeProps){
     return (
     <>
         <div className="w-50 h-50 border-1 rounded-lg flex flex-col items-center justify-between">

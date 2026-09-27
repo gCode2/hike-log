@@ -8,19 +8,7 @@ function HikeForm({action, hikes, addHikeHandler, editHikeHandler}: HikeFormProp
         
     const hikeToEdit = action === "Edit" ? hikes.find(hike=>hike.id===id) : undefined;
 
-    if(action === "Edit" && !hikeToEdit){
-        return (
-            <div className="flex flex-col items-center justify-center gap-4 mt-20">
-                <h2 className="text-xl font-bold">
-                    Couldn't find any hike with the given ID :(
-                </h2>
-                <Link to="/" className="border-1 border-zinc-500 text-white font-bold py-2 px-4 rounded text-xs hover:bg-zinc-700 transition">
-                    Home
-                </Link>
-            </div>
-        )
-    }
-
+   
     const [inputs, setInputs]=useState({
         name: "",
         peak: "",
@@ -53,6 +41,19 @@ function HikeForm({action, hikes, addHikeHandler, editHikeHandler}: HikeFormProp
             });  
         }
     }, [hikeToEdit])
+
+     if(action === "Edit" && !hikeToEdit){
+        return (
+            <div className="flex flex-col items-center justify-center gap-4 mt-20">
+                <h2 className="text-xl font-bold">
+                    Couldn't find any hike with the given ID :(
+                </h2>
+                <Link to="/" className="border-1 border-zinc-500 text-white font-bold py-2 px-4 rounded text-xs hover:bg-zinc-700 transition">
+                    Home
+                </Link>
+            </div>
+        )
+    }
 
     function handleChange(e : React.ChangeEvent<HTMLInputElement | HTMLSelectElement>){
         setInputs(prev=>({...prev, [e.target.name]:e.target.value}));
