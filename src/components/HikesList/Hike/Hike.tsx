@@ -56,7 +56,19 @@ function Hike({hike, hikeRemoveHandler}: HikeProps){
                     transition duration-300 ease-in-out">
                         Edit
                     </Link>
-                    
+                </div>
+                <div>
+                    <Link to={`/hikes/${hike.id}`} className="bg-blue-500
+                    hover:bg-blue-600
+                    text-white
+                    font-bold
+                    py-0.5 px-2
+                    rounded
+                    text-xs
+                    hover:cursor-pointer
+                    transition duration-300 ease-in-out">
+                        More
+                    </Link>
                 </div>
             </div>
             
