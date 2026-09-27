@@ -1,9 +1,8 @@
 import { Link, useParams } from "react-router-dom";
-import type { HikeDetailsProps } from "../../types/types";
 import useHikeLog from "../../hooks/useHikeLog";
 
 
-function HikeDetails({}:HikeDetailsProps){
+function HikeDetails(){
     const {id} = useParams();
     const context = useHikeLog();
     const hikeToDisplay=context.state.hikes.find(hike=>hike.id === id);

@@ -84,8 +84,6 @@ export interface HikesSummaryProps{
     hikes: Hike[]
 }
 
-export interface HikeDetailsProps{
-}
 export interface LayoutProps{
     searchText: string,
     changeHandler: (text: string) => void
@@ -97,6 +95,7 @@ export interface HikeLogContextType{
     state: hikeLogState,
     dispatch: Dispatch<HikeAction>
 }
-export interface HikeLogProviderProps{
-    children: ReactNode;
-}
+// export interface HikeLogProviderProps{
+//     children: ReactNode;
+// }
+// ^ unused for now
