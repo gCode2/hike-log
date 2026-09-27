@@ -93,9 +93,12 @@ export type FormActions = "Add" | "Edit"
 
 export interface HikeLogContextType{
     state: hikeLogState,
-    dispatch: Dispatch<HikeAction>
+    dispatch: Dispatch<HikeAction>,
+    searchText: string,
+    setSearchText: (text: string) => void,
+    filteredAndSortedHikes: Hike[],
+    hikeDifficultyLevels: readonly (DifficultyLevel | "all")[]
 }
-// export interface HikeLogProviderProps{
-//     children: ReactNode;
-// }
-// ^ unused for now
+export interface HikeLogProviderProps{
+    children: ReactNode;
+}
