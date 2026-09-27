@@ -49,7 +49,7 @@ function App() {
       if(!Array.isArray(parsed)){
         return [];
       }
-      return parsed.map((hike: any)=>({
+      return parsed.map((hike: Hike)=>({
         ...hike,
         date: new Date(hike.date)
       }));
