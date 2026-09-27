@@ -1,8 +1,8 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import type { HikeDetailsProps } from "../../types/types";
 
+
 function HikeDetails({hikes}:HikeDetailsProps){
-    
     const {id} = useParams();
 
     const hikeToDisplay=hikes.find(hike=>hike.id === id);
@@ -10,7 +10,7 @@ function HikeDetails({hikes}:HikeDetailsProps){
     return (
         <>
             {hikeToDisplay ? 
-            <div>
+            <div className="flex flex-col justify-center items-center">
                 <div className="flex flex-row justify-center items-center">
                     <span className="text-2xl font-bold">Hike details</span>
                 </div>
@@ -35,7 +35,31 @@ function HikeDetails({hikes}:HikeDetailsProps){
                 <div>
                     Difficulty: {hikeToDisplay.difficulty}
                 </div>
-
+                <div className="flex flex-row gap-2 py-2">
+                    <Link to={`/hikes/${hikeToDisplay.id}/edit`} className="bg-zinc-500
+                    hover:bg-zinc-600
+                    text-white
+                    font-bold
+                    py-0.5 px-2
+                    rounded
+                    text-xs
+                    hover:cursor-pointer
+                    transition duration-300 ease-in-out">
+                        Edit
+                    </Link>
+                    <Link to="/" className="
+                    hover:bg-zinc-600
+                    border-1
+                    text-white
+                    font-bold
+                    py-0.5 px-2
+                    rounded
+                    text-xs
+                    hover:cursor-pointer
+                    transition duration-300 ease-in-out">
+                        Home
+                    </Link>
+                </div>
             </div>
             : 
             <div className="flex flex-row justify-center items-center">
