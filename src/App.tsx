@@ -1,7 +1,7 @@
 import './App.css'
 import "tailwindcss";
 import HikesList from './components/HikesList/HikesList';
-import type { DifficultyLevel, Hike as HikeType, HikeAction, HikeData, hikeLogState, SortFields, SortOrders, Hike } from './types/types';
+import type { DifficultyLevel, Hike, HikeAction, HikeData, hikeLogState, SortFields, SortOrders} from './types/types';
 import { DIFFICULTY_LEVELS } from './types/types';
 import { useEffect, useReducer, useState } from 'react';
 import FilterHandler from './components/HikeLogControllers/FilterHandler/FilterHandler';
@@ -36,9 +36,9 @@ function App() {
     }
   }
 
-  const initialHikes: HikeType[] = getInitialHikes();
+  const initialHikes: Hike[] = getInitialHikes();
 
-  function getInitialHikes() : HikeType[]{
+  function getInitialHikes() : Hike[]{
     const saved = localStorage.getItem("hikes");
     if(!saved){
       return [];
@@ -68,7 +68,7 @@ function App() {
   }, [state.hikes])
 
   function addHikeHandler(data: HikeData){
-    const newHike: HikeType = {id: crypto.randomUUID(), ...data}
+    const newHike: Hike = {id: crypto.randomUUID(), ...data}
     dispatch({
       type: "HIKE_ADD",
       data: newHike

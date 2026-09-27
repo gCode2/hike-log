@@ -6,18 +6,37 @@ function HikeForm({action, hikes, addHikeHandler, editHikeHandler}: HikeFormProp
     const navigate = useNavigate();
     const {id} = useParams();
         
-    const hikeToEdit = action === "Edit" ? hikes.find(hike=>hike.id===id) : undefined;
+    
 
    
-    const [inputs, setInputs]=useState({
-        name: "",
-        peak: "",
-        height: "",
-        date: "",
-        distanceKm: "",
-        elevationGainM:"",
-        difficulty: "Easy"
+    const [inputs, setInputs] = useState(()=>{
+        if(action === "Edit"){
+            const hikeToEdit = hikes.find(hike=>hike.id===id);
+        
+            if(hikeToEdit){
+                return {
+                    name: hikeToEdit.name ?? "",
+                    peak: hikeToEdit.peak ?? "",
+                    height: hikeToEdit.height ? String(hikeToEdit.height) : "",
+                    date: hikeToEdit.date ? new Date(hikeToEdit.date).toISOString().split('T')[0] : "",
+                    distanceKm: hikeToEdit.distanceKm ? String(hikeToEdit.distanceKm) : "",
+                    elevationGainM: hikeToEdit.elevationGainM ? String(hikeToEdit.elevationGainM) : "",
+                    difficulty: hikeToEdit.difficulty ?? "Easy"
+                };
+            }
+            
+        }
+        return {
+            name: "",
+            peak: "",
+            height: "",
+            date: "",
+            distanceKm: "",
+            elevationGainM: "",
+            difficulty: "Easy"
+        };
     })
+
     const [errors, setErrors] = useState({
         name: "",
         peak: "",
@@ -28,19 +47,7 @@ function HikeForm({action, hikes, addHikeHandler, editHikeHandler}: HikeFormProp
         difficulty: ""
     });
 
-    useEffect(()=>{
-        if(hikeToEdit){
-          setInputs({
-                name: hikeToEdit.name ?? "",
-                peak: hikeToEdit.peak ?? "",
-                height: hikeToEdit.height ? String(hikeToEdit.height) : "",
-                date: hikeToEdit.date ? new Date(hikeToEdit.date).toISOString().split('T')[0] : "",
-                distanceKm: hikeToEdit.distanceKm ? String(hikeToEdit.distanceKm) : "",
-                elevationGainM: hikeToEdit.elevationGainM ? String(hikeToEdit.elevationGainM) : "",
-                difficulty: hikeToEdit.difficulty ?? "Easy"
-            });  
-        }
-    }, [hikeToEdit])
+    const hikeToEdit = action === "Edit" ? hikes.find(hike => hike.id === id) : undefined;
 
      if(action === "Edit" && !hikeToEdit){
         return (
