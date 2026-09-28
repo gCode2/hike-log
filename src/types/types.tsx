@@ -49,9 +49,7 @@ export type HikeAction = | {
 }
 
 export interface HikeFormProps{
-    action: FormActions,
-    addHikeHandler: (hikeData: HikeData) => void,
-    editHikeHandler: (id:string, hikeData: HikeData) => void
+    action: FormActions
 }
 
 export interface HikeData{

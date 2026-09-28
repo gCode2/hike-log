@@ -46,31 +46,13 @@ function App() {
             </>
           }/>
           <Route path="/add" element={
-            <HikeForm action={"Add"} 
-            addHikeHandler={data=>
-              dispatch(
-                {type:"HIKE_ADD", 
-                data:{id: crypto.randomUUID(), ...data}}
-              )} 
-            editHikeHandler={(id, data) => dispatch({
-              type: "HIKE_EDIT",
-              data: {...data, id: id}
-            })}/>
+            <HikeForm action={"Add"}/>
           }/>
           <Route path="/hikes/:id"  element={
             <HikeDetails/>
           }/>
           <Route path="/hikes/:id/edit" element={
-            <HikeForm action={"Edit"}
-            addHikeHandler={data=>
-              dispatch(
-                {type:"HIKE_ADD", 
-                data:{id: crypto.randomUUID(), ...data}}
-              )} 
-              editHikeHandler={(id, data) => dispatch({
-              type: "HIKE_EDIT",
-              data: {...data, id: id}
-              })}/>
+            <HikeForm action={"Edit"}/>
           }/>
           </Route>
           

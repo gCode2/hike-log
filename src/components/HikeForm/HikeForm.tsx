@@ -3,11 +3,11 @@ import { DIFFICULTY_LEVELS, type HikeFormProps, type DifficultyLevel} from "../.
 import { Link, useNavigate, useParams } from "react-router-dom";
 import useHikeLog from "../../hooks/useHikeLog";
 
-function HikeForm({action, addHikeHandler, editHikeHandler}: HikeFormProps){
+function HikeForm({action}: HikeFormProps){
     const navigate = useNavigate();
     const {id} = useParams();
         
-    const {state} = useHikeLog();
+    const {state, dispatch} = useHikeLog();
 
    
     const [inputs, setInputs] = useState(()=>{
@@ -95,25 +95,34 @@ function HikeForm({action, addHikeHandler, editHikeHandler}: HikeFormProps){
                 difficulty: "Easy"
             })
             if(action === "Edit"){
-               editHikeHandler(id!, {
-                name: inputs.name,
-                peak: inputs.peak,
-                height: Number(inputs.height),
-                date: new Date(inputs.date),
-                distanceKm: Number(Number(inputs.distanceKm).toFixed(1)),
-                elevationGainM: Number(inputs.elevationGainM),
-                difficulty: inputs.difficulty as DifficultyLevel
-            });
+                const data = {
+                    name: inputs.name,
+                    peak: inputs.peak,
+                    height: Number(inputs.height),
+                    date: new Date(inputs.date),
+                    distanceKm: Number(Number(inputs.distanceKm).toFixed(1)),
+                    elevationGainM: Number(inputs.elevationGainM),
+                    difficulty: inputs.difficulty as DifficultyLevel
+                }
+                dispatch({
+                    type:"HIKE_EDIT",
+                    data: {...data, id: id!}
+                });
+
             }else if(action === "Add"){
-                addHikeHandler({
-                name: inputs.name,
-                peak: inputs.peak,
-                height: Number(inputs.height),
-                date: new Date(inputs.date),
-                distanceKm: Number(Number(inputs.distanceKm).toFixed(1)),
-                elevationGainM: Number(inputs.elevationGainM),
-                difficulty: inputs.difficulty as DifficultyLevel
-            });
+                const data = {
+                    name: inputs.name,
+                    peak: inputs.peak,
+                    height: Number(inputs.height),
+                    date: new Date(inputs.date),
+                    distanceKm: Number(Number(inputs.distanceKm).toFixed(1)),
+                    elevationGainM: Number(inputs.elevationGainM),
+                    difficulty: inputs.difficulty as DifficultyLevel
+                }
+                dispatch({
+                    type:"HIKE_ADD", 
+                    data: {id:crypto.randomUUID(), ...data}
+                });
             }
             navigate("/");
         }
