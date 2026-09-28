@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { DIFFICULTY_LEVELS, type HikeFormProps, type DifficultyLevel} from "../../types/types";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import useHikeLog from "../../hooks/useHikeLog";
 
-function HikeForm({action, hikes, addHikeHandler, editHikeHandler}: HikeFormProps){
+function HikeForm({action, addHikeHandler, editHikeHandler}: HikeFormProps){
     const navigate = useNavigate();
     const {id} = useParams();
         
-    
+    const {state} = useHikeLog();
 
    
     const [inputs, setInputs] = useState(()=>{
         if(action === "Edit"){
-            const hikeToEdit = hikes.find(hike=>hike.id===id);
+            const hikeToEdit = state.hikes.find(hike=>hike.id===id);
         
             if(hikeToEdit){
                 return {
@@ -47,7 +48,7 @@ function HikeForm({action, hikes, addHikeHandler, editHikeHandler}: HikeFormProp
         difficulty: ""
     });
 
-    const hikeToEdit = action === "Edit" ? hikes.find(hike => hike.id === id) : undefined;
+    const hikeToEdit = action === "Edit" ? state.hikes.find(hike => hike.id === id) : undefined;
 
      if(action === "Edit" && !hikeToEdit){
         return (
