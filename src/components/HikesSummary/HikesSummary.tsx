@@ -2,24 +2,16 @@ import { useMemo } from "react";
 import type { HikesSummaryProps } from "../../types/types";
 
 function HikesSummary({hikes}: HikesSummaryProps){
-
-    function getDistanceSum(){
-        const distanceSum = useMemo(()=>{
-            return hikes.reduce((sum,hike)=>{
+    const totalDistance = useMemo(()=>{
+        return hikes.reduce((sum,hike)=>{
                 return sum+=hike.distanceKm;
-            }, 0)
-        },[hikes])
-        return distanceSum;
-    }
-    function getElevationGainSum(){
-        const elevationSum = useMemo(()=>{
-            return hikes.reduce((sum,hike)=>{
-                return sum+=hike.elevationGainM;
-            }, 0)
-        }, [hikes])
-        return elevationSum;
-    }
-
+        }, 0)
+    }, [hikes])
+    const totalElevationGain = useMemo(()=>{
+        return hikes.reduce((sum,hike)=>{
+            return sum+=hike.elevationGainM;
+        }, 0)
+    }, [hikes])
 
     return (
         <>
@@ -31,10 +23,10 @@ function HikesSummary({hikes}: HikesSummaryProps){
                     Hikes count: {hikes.length}
                 </div>
                 <div>
-                    Sum of distances: {getDistanceSum()} km
+                    Sum of distances: {totalDistance} km
                 </div>
                 <div>
-                    Sum of elevation gain: {getElevationGainSum()} m
+                    Sum of elevation gain: {totalElevationGain} m
                 </div>
             </div>
         </>
