@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer, useState } from "react";
+import { createContext, useEffect, useMemo, useReducer, useState } from "react";
 import { DIFFICULTY_LEVELS, type Hike, type HikeAction, type HikeLogContextType, type HikeLogProviderProps, type hikeLogState} from "../types/types";
 
 export const HikeLogContext = createContext<HikeLogContextType | null>(null);
@@ -60,31 +60,42 @@ function HikeLogContextProvider({children} : HikeLogProviderProps){
 
   const hikeDifficultyLevels = ["all", ...DIFFICULTY_LEVELS] as const;
 
-  const filteredHikes = state.hikes.filter(hike=>{
-    const matchesLevel = state.selectedHikeDifficulty === "all" || hike.difficulty === state.selectedHikeDifficulty;
+  const filteredHikes = useMemo( () => {
 
-    const matchesSearch = hike.name.toLowerCase().includes(searchText.toLowerCase()) || hike.peak.toLowerCase().includes(searchText.toLowerCase())
+    return state.hikes.filter(hike=>{
+      const matchesLevel = state.selectedHikeDifficulty === "all" || hike.difficulty === state.selectedHikeDifficulty;
 
-    return matchesLevel && matchesSearch;
-  })
-  const filteredAndSortedHikes = [...filteredHikes].sort((a,b)=>{
-    const field = state.sortField;
-    const order = state.sortOrder;
-    if(!field || !order) return 0;
+      const matchesSearch = hike.name.toLowerCase().includes(searchText.toLowerCase()) || hike.peak.toLowerCase().includes(searchText.toLowerCase())
 
-    const modifier = order === "Asc" ? 1 : -1;
-    if(field === "Date"){
+      return matchesLevel && matchesSearch;
+    })
+
+  }, [state.hikes, state.selectedHikeDifficulty, searchText]) 
+
+  
+  const filteredAndSortedHikes = useMemo(()=>{
+    return [...filteredHikes].sort((a,b)=>{
+      const field = state.sortField;
+      const order = state.sortOrder;
+      if(!field || !order) return 0;
+      console.log("XD");
+      const modifier = order === "Asc" ? 1 : -1;
+      if(field === "Date"){
         const dateA = a.date.getTime();
         const dateB = b.date.getTime();
         return (dateA - dateB) * modifier;
-    }
-    if(field === "Distance"){
+      }
+      if(field === "Distance"){
         const distanceA = a.distanceKm;
         const distanceB = b.distanceKm;
         return (distanceA - distanceB) * modifier;
-    }
+      }
     return 0;
-  })
+    })
+  },[state, searchText])
+  
+  
+  
 
   return(
   <>
