@@ -78,7 +78,7 @@ function HikeLogContextProvider({children} : HikeLogProviderProps){
       const field = state.sortField;
       const order = state.sortOrder;
       if(!field || !order) return 0;
-      
+
       const modifier = order === "Asc" ? 1 : -1;
       if(field === "Date"){
         const dateA = a.date.getTime();
@@ -92,7 +92,7 @@ function HikeLogContextProvider({children} : HikeLogProviderProps){
       }
     return 0;
     })
-  },[state, searchText])
+  },[state.hikes, state.selectedHikeDifficulty, state.sortField, state.sortOrder, searchText])
   
   
   
