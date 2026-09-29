@@ -60,9 +60,13 @@ function HikeLogContextProvider({children} : HikeLogProviderProps){
 
   const hikeDifficultyLevels = ["all", ...DIFFICULTY_LEVELS] as const;
 
-  const filteredHikes = useMemo( () => {
+  
 
-    return state.hikes.filter(hike=>{
+
+  
+  const filteredAndSortedHikes = useMemo(()=>{
+
+    const filteredHikes = state.hikes.filter(hike=>{
       const matchesLevel = state.selectedHikeDifficulty === "all" || hike.difficulty === state.selectedHikeDifficulty;
 
       const matchesSearch = hike.name.toLowerCase().includes(searchText.toLowerCase()) || hike.peak.toLowerCase().includes(searchText.toLowerCase())
@@ -70,15 +74,11 @@ function HikeLogContextProvider({children} : HikeLogProviderProps){
       return matchesLevel && matchesSearch;
     })
 
-  }, [state.hikes, state.selectedHikeDifficulty, searchText]) 
-
-  
-  const filteredAndSortedHikes = useMemo(()=>{
     return [...filteredHikes].sort((a,b)=>{
       const field = state.sortField;
       const order = state.sortOrder;
       if(!field || !order) return 0;
-      console.log("XD");
+      
       const modifier = order === "Asc" ? 1 : -1;
       if(field === "Date"){
         const dateA = a.date.getTime();
